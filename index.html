@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+    <link rel="manifest" href="icons/site.webmanifest">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AERO | Premium Fitness</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">AERO<span class="dot">.</span>FIT</div>
+        <div class="nav-links">
+            <button onclick="router.navigate('home')" class="nav-btn active">Workouts</button>
+            <button onclick="router.navigate('planner')" class="nav-btn">Weekly Plan</button>
+        </div>
+    </nav>
+
+    <main id="app">
+        
+        <section id="view-home" class="view active-view">
+            <div class="hero-text">
+                <h1>Select Your <span class="gradient-text">Protocol</span></h1>
+                <p>Premium training for elite performance.</p>
+            </div>
+            
+            <div class="card-grid" id="category-grid">
+                </div>
+        </section>
+
+        <section id="view-workout" class="view" style="padding: 0; max-width: 100%;">
+            <div class="exercise-container" id="exercise-list"></div>
+        </section>
+
+        <section id="view-planner" class="view">
+            <div class="planner-header">
+                <button onclick="router.navigate('home')" class="back-nav-btn static-back-btn">
+                    <i class="ph ph-arrow-left"></i> Back to Workouts
+                </button>
+            </div>
+
+            <div class="planner-layout">
+                <aside class="planner-sidebar">
+                    <h2>Modules</h2>
+                    <p>Drag specific workouts to days.</p>
+                    <div class="draggable-source" id="draggable-source">
+                        </div>
+                </aside>
+
+                <div class="planner-grid">
+                    <h2>Weekly Schedule</h2>
+                    <div class="week-container" id="week-grid">
+                        </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
