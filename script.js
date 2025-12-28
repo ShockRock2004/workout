@@ -114,12 +114,13 @@ function initHome() {
         
         const card = document.createElement('div');
         card.className = 'muscle-card';
-        // IMPORTANT: Add data-id for CSS targeting (Cardio Red / Abs Green)
         card.setAttribute('data-id', key);
         
         card.innerHTML = `
-            <i class="ph ${iconClass}"></i>
-            <h3>${data.title}</h3>
+            <div style="display:flex; align-items:center;">
+                <i class="ph ${iconClass}"></i>
+                <h3>${data.title}</h3>
+            </div>
             <i class="ph ph-caret-right" style="font-size: 1.2rem; color: var(--text-muted); background: none; -webkit-text-fill-color: var(--text-muted);"></i>
         `;
         
@@ -132,11 +133,9 @@ function initHome() {
 function loadWorkoutPage(key) {
     const data = workoutData[key];
     const container = document.getElementById('exercise-list');
-    
-    // Clear previous
     container.innerHTML = '';
 
-    // 1. ADD FIXED BACK BUTTON (REQUIRED)
+    // 1. FIXED BACK BUTTON
     const backBtn = document.createElement('button');
     backBtn.className = 'back-nav-btn fixed-back-btn';
     backBtn.innerHTML = '<i class="ph ph-arrow-left"></i> Back';
@@ -145,7 +144,7 @@ function loadWorkoutPage(key) {
     };
     container.appendChild(backBtn);
 
-    // 2. ADD INTRO SLIDE (First Snap Point)
+    // 2. INTRO SLIDE
     const introSlide = document.createElement('div');
     introSlide.className = 'workout-intro-slide';
     introSlide.innerHTML = `
@@ -157,14 +156,12 @@ function loadWorkoutPage(key) {
     `;
     container.appendChild(introSlide);
 
-    // 3. GENERATE EXERCISES (One per slide)
-    data.exercises.forEach((ex, index) => {
+    // 3. EXERCISE SLIDES
+    data.exercises.forEach((ex) => {
         const card = document.createElement('div');
         card.className = 'exercise-card';
-        
         const imgPath = `assets/images/${key}/${ex.img}`;
         
-        // FIXED: Tag color is now always BLUE/CYAN (#00c6ff), removed alternating green logic.
         card.innerHTML = `
             <div class="ex-image">
                 <img src="${imgPath}" alt="${ex.name}" onerror="this.src='https://via.placeholder.com/800x800/0a0a0f/333?text=${ex.name}'">
@@ -184,6 +181,8 @@ function loadWorkoutPage(key) {
 }
 
 /* --- WEEKLY PLANNER & PERSISTENCE --- */
+let selectedMobileItem = null; // State for mobile interaction
+
 function savePlan() {
     const planData = [];
     document.querySelectorAll('.drop-zone').forEach(zone => {
@@ -238,10 +237,29 @@ function initPlanner() {
         item.draggable = true;
         item.setAttribute('data-id', key);
         item.innerHTML = `<i class="ph ${muscleIcons[key]}"></i> ${data.title}`;
+        
+        // Desktop Drag Start
         item.addEventListener('dragstart', (e) => {
             e.dataTransfer.setData('text/plain', key);
             e.dataTransfer.effectAllowed = 'copy';
         });
+
+        // Mobile Tap Selection Logic
+        item.addEventListener('click', () => {
+            // Only active on small screens or touch
+            if (window.innerWidth <= 768) {
+                // Clear previous selection
+                document.querySelectorAll('.draggable-item').forEach(el => el.classList.remove('selected'));
+                // Set new selection
+                if (selectedMobileItem === key) {
+                    selectedMobileItem = null; // Deselect
+                } else {
+                    selectedMobileItem = key;
+                    item.classList.add('selected');
+                }
+            }
+        });
+
         source.appendChild(item);
     }
 
@@ -261,10 +279,13 @@ function initPlanner() {
         weekGrid.appendChild(row);
     });
 
-    // Drop Listeners
+    // Drop Listeners (Desktop & Mobile)
     document.querySelectorAll('.drop-zone').forEach(zone => {
+        // Desktop Drag Over
         zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('drag-over'); });
         zone.addEventListener('dragleave', () => { zone.classList.remove('drag-over'); });
+        
+        // Desktop Drop
         zone.addEventListener('drop', (e) => {
             e.preventDefault();
             zone.classList.remove('drag-over');
@@ -273,6 +294,20 @@ function initPlanner() {
             if(data) {
                 renderDroppedItem(zone, key, data.title);
                 savePlan();
+            }
+        });
+
+        // Mobile Tap to Assign
+        zone.addEventListener('click', () => {
+            if (window.innerWidth <= 768 && selectedMobileItem) {
+                const data = workoutData[selectedMobileItem];
+                if(data) {
+                    renderDroppedItem(zone, selectedMobileItem, data.title);
+                    savePlan();
+                    // Reset selection after drop
+                    selectedMobileItem = null;
+                    document.querySelectorAll('.draggable-item').forEach(el => el.classList.remove('selected'));
+                }
             }
         });
     });

@@ -60,6 +60,8 @@ body {
 .logo { font-family: var(--font-heading); font-weight: 800; font-size: 1.5rem; letter-spacing: 2px; }
 .dot { color: #00c6ff; }
 
+.nav-links { display: flex; align-items: center; }
+
 .nav-btn {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -232,6 +234,13 @@ body {
 .draggable-item:hover { border-color: #00c6ff; background: rgba(0, 198, 255, 0.1); }
 .draggable-item:active { cursor: grabbing; }
 
+/* Mobile selection state for tap-to-assign */
+.draggable-item.selected {
+    border-color: #00c6ff;
+    background: rgba(0, 198, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 198, 255, 0.3);
+}
+
 .planner-grid h2 { margin-bottom: 1rem; font-family: var(--font-heading); }
 .week-container {
     display: flex; flex-direction: column; gap: 1rem;
@@ -252,12 +261,108 @@ body {
 }
 .drop-zone.drag-over { background: rgba(0, 198, 255, 0.1); border-color: #00c6ff; box-shadow: 0 0 10px rgba(0,198,255,0.2); }
 
-/* Responsive */
-@media (max-width: 900px) {
-    .exercise-card, .exercise-card:nth-child(even) { flex-direction: column; text-align: center; }
-    .ex-image { width: 100%; height: 40vh; margin-bottom: 1rem; }
-    .ex-content { padding: 1rem; }
-    .planner-layout { grid-template-columns: 1fr; }
-    .planner-sidebar { height: auto; display: flex; flex-wrap: wrap; gap: 1rem; }
-    .fixed-back-btn { top: 8rem; left: 1rem; padding: 0.6rem 1rem; }
+
+/* ========================================= */
+/* MOBILE OPTIMIZATION (Max Width 768px)     */
+/* ========================================= */
+@media (max-width: 768px) {
+    
+    /* --- NAVBAR --- */
+    .navbar { padding: 1rem 1.2rem; }
+    .logo { font-size: 1.2rem; letter-spacing: 1px; }
+    .nav-btn {
+        margin-left: 0.5rem;
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    /* --- HOME --- */
+    .view { padding: 1rem; width: 100%; }
+    .hero-text h1 { font-size: 2.2rem; line-height: 1.2; }
+    .hero-text p { font-size: 0.9rem; }
+    
+    .card-grid { gap: 1.5rem; padding: 1rem 0; }
+    .muscle-card { padding: 1.5rem; }
+    .muscle-card h3 { font-size: 1.4rem; }
+    .muscle-card i { font-size: 2rem; margin-right: 1rem; }
+
+    /* --- WORKOUT VIEW --- */
+    .fixed-back-btn {
+        top: 5rem; /* Lowered slightly, but closer than desktop */
+        left: 1rem;
+        font-size: 0.8rem;
+        padding: 0.6rem 1.2rem;
+    }
+
+    .workout-intro-slide h1 { font-size: 2.8rem !important; }
+
+    /* Force Vertical Stack for Exercises */
+    .exercise-card, 
+    .exercise-card:nth-child(even) {
+        flex-direction: column; /* Image Top, Text Bottom */
+        padding: 0;
+        justify-content: flex-start;
+        padding-top: 4rem; /* Safe space for back button on first slides */
+    }
+
+    .ex-image {
+        width: 100%;
+        height: 45vh; /* Reduced height */
+        flex: none; /* Disable flex grow/shrink */
+        border-radius: 0 0 20px 20px;
+        box-shadow: none;
+        margin-bottom: 0;
+    }
+    
+    .ex-content {
+        width: 100%;
+        height: auto;
+        padding: 1.5rem;
+        text-align: left;
+    }
+
+    .ex-content h2 { font-size: 2rem !important; margin-top: 0.5rem !important; line-height: 1.1; }
+    .ex-content p { font-size: 1rem !important; line-height: 1.5; margin-top: 1rem !important; }
+
+    /* --- WEEKLY PLANNER --- */
+    .planner-layout {
+        display: flex;
+        flex-direction: column; /* Stack Sidebar on Top */
+        gap: 1rem;
+        height: auto;
+    }
+
+    .planner-sidebar {
+        width: 100%;
+        max-height: none;
+        padding: 1rem;
+    }
+
+    .draggable-source {
+        display: flex;
+        overflow-x: auto; /* Horizontal Scroll */
+        gap: 1rem;
+        padding-bottom: 0.5rem;
+    }
+    
+    .draggable-item {
+        min-width: 160px;
+        margin-bottom: 0;
+        flex-shrink: 0;
+        justify-content: center;
+    }
+    
+    /* Reveal Mobile Hint */
+    .desktop-hint { display: none; }
+    .mobile-hint { display: block !important; margin-bottom: 0.5rem; }
+
+    /* Vertical Day Rows */
+    .day-row {
+        grid-template-columns: 1fr; /* Stack Vertically */
+        gap: 0.5rem;
+    }
+    
+    .drop-zone { height: 50px; font-size: 0.9rem; }
+    .planner-grid { height: auto; }
+    .week-container { overflow-y: visible; padding-right: 0; }
 }

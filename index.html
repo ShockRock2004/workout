@@ -6,7 +6,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
     <link rel="manifest" href="icons/site.webmanifest">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AERO | Premium Fitness</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,8 +31,8 @@
         
         <section id="view-home" class="view active-view">
             <div class="hero-text">
-                <h1>Select Your <span class="gradient-text">Workout</span></h1>
-                <p>Exercises for Each Muscle Group</p>
+                <h1>Select Your <span class="gradient-text">Protocol</span></h1>
+                <p>Premium training for elite performance.</p>
             </div>
             
             <div class="card-grid" id="category-grid">
@@ -53,7 +53,8 @@
             <div class="planner-layout">
                 <aside class="planner-sidebar">
                     <h2>Modules</h2>
-                    <p>Drag specific workouts to days.</p>
+                    <p class="desktop-hint">Drag specific workouts to days.</p>
+                    <p class="mobile-hint" style="display:none; color: var(--text-muted); font-size: 0.8rem;">Tap module to select, then tap a day.</p>
                     <div class="draggable-source" id="draggable-source">
                         </div>
                 </aside>
